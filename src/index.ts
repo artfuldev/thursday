@@ -37,4 +37,12 @@ export class Thursday {
       this._statistics.push([[factor*value, unit], description]);
     }
   }
+
+  retrieve(value: number, tolerance = 0.10) {
+    const lower_bound = value * (1 - tolerance);
+    const upper_bound = value * (1 + tolerance);
+    return this._statistics
+      .filter(([[value, _], __]) => value >= lower_bound && value <= upper_bound)
+      .map<Statistic>(([[_, unit], description]) => [[value, unit], description]);
+  }
 };
