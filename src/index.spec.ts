@@ -36,4 +36,42 @@ describe('Thursday', () => {
     test(value, .25);
     test(value * .75, .5);
   });
+
+  it('should add conversions', () => {
+    const thursday = new Thursday();
+    const value = 20;
+    const unit = "minutes";
+    const description = "spent";
+    const statistic: Statistic = [[value, unit], description];
+    thursday.realize("minutes", [60, "seconds"]);
+    thursday.record(statistic);
+
+    const results = thursday.retrieve(1200);
+    expect(results).to.be.an('array');
+    expect(results).to.have.length(1);
+    const match = results[0];
+    expect(match[0][0]).to.equal(1200);
+    expect(match[0][1]).to.equal("seconds");
+    expect(match[1]).to.equal(description);
+  });
+
+  it('should add deeper conversions', () => {
+    const thursday = new Thursday();
+    const value = 20;
+    const unit = "minutes";
+    const description = "spent";
+    const statistic: Statistic = [[value, unit], description];
+    thursday.realize("minutes", [60, "seconds"]);
+    thursday.realize("seconds", [1000, "milliseconds"]);
+    thursday.realize("milliseconds", [1000, "microseconds"]);
+    thursday.record(statistic);
+
+    const results = thursday.retrieve(1200000000);
+    expect(results).to.be.an('array');
+    expect(results).to.have.length(1);
+    const match = results[0];
+    expect(match[0][0]).to.equal(1200000000);
+    expect(match[0][1]).to.equal("microseconds");
+    expect(match[1]).to.equal(description);
+  });
 });
