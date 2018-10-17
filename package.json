@@ -1,9 +1,10 @@
 {
-  "name": "thursday",
+  "name": "@artfuldev/thursday",
   "version": "1.0.0",
   "description": "A hyper unrealistic stats-generating digital assistant thingy. Also has a one-up on Friday.",
   "main": "index.js",
   "scripts": {
+    "prepare": "tsc",
     "test": "mocha -r ts-node/register src/**/*.spec.ts"
   },
   "repository": {
