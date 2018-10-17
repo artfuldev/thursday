@@ -21,14 +21,18 @@ export class Thursday {
   private visited_units: Unit[] = [];
 
   private _deep_realize(unit1: Unit, unit2: Unit) {
-    const visited_units = this.visited_units;
-    const convert_down = Object.keys(this._conversions[unit2] || {}).filter(function(unit) { return unit !== unit1 && visited_units.indexOf(unit) === -1; });
+    const convert_down =
+      Object.keys(this._conversions[unit2] || {})
+        .filter(unit => unit !== unit1)
+        .filter(unit => this.visited_units.indexOf(unit) === -1);
     const current_conversions = Object.keys(this._conversions[unit1]);
-    if (convert_down.every(function(unit) { return current_conversions.indexOf(unit) > -1; })) return;
+    if (convert_down.every(unit => current_conversions.indexOf(unit) > -1)) return;
     const factor = this._conversions[unit1][unit2];
-    const realize = this._realize.bind(this);
-    const conversions = this._conversions[unit2];
-    convert_down.forEach(function (unit) { visited_units.push(unit); realize(unit1, [factor * conversions[unit], unit]); visited_units.pop(); });
+    convert_down.forEach(unit => {
+      this.visited_units.push(unit);
+      this.realize(unit1, [factor * this._conversions[unit2][unit], unit]);
+      this.visited_units.pop();
+    });
   }
 
   private _realize(unit1: Unit, [value, unit2]: Measure, apply_reverse = true) {
