@@ -61,9 +61,21 @@ describe('Thursday', () => {
     const unit = "minutes";
     const description = "spent";
     const statistic: Statistic = [[value, unit], description];
-    thursday.realize("minutes", [60, "seconds"]);
-    thursday.realize("seconds", [1000, "milliseconds"]);
-    thursday.realize("milliseconds", [1000, "microseconds"]);
+    const realizations: any = [
+      ["decades", [10, "years"]],
+      ["years", [365, "days"]],
+      ["years", [12, "months"]],
+      ["months", [30, "days"]],
+      ["weeks", [7, "days"]],
+      ["days", [24, "hours"]],
+      ["hours", [60, "minutes"]],
+      ["minutes", [60, "seconds"]],
+      ["seconds", [1000, "milliseconds"]],
+      ["milliseconds", [1000, "microseconds"]],
+      ["microseconds", [1000, "nanoseconds"]],
+      ["nanoseconds", [1000, "picoseconds"]]
+    ];
+    realizations.forEach(function (realization: any) { thursday.realize(realization[0], realization[1]) });
     thursday.record(statistic);
 
     const results = thursday.retrieve(1200000000);
